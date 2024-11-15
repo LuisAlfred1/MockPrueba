@@ -37,9 +37,15 @@
                 @Html.DisplayFor(modelItem => item.CorreoElectronico)
             </td>
             <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                <a asp-action="Edit" asp-route-id="@item.Id">
+                    <button class="btn btn-primary"><i class="bi bi-pencil-square"></i></button>
+                </a> |
+                <a asp-action="Details" asp-route-id="@item.Id">
+                    <button class="btn btn-dark"><i class="bi bi-eye-fill"></i></button>
+                </a> |
+                    <a asp-action="Delete" asp-route-id="@item.Id">
+                        <button class="btn btn-danger"><i class="bi bi-archive"></i></button>
+                    </a>
             </td>
         </tr>
 }
