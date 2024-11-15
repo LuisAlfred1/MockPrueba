@@ -1,0 +1,140 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div class="container mt-5">
+    <div class="row mb-4">
+        <!-- Filtros -->
+        <div class="col-md-5">
+            <input type="text" class="form-control" placeholder="Filtrar por producto...">
+        </div>
+        <div class="col-md-2">
+            <input type="text" class="form-control" placeholder="Año">
+        </div>
+        <div class="col-md-2">
+            <input type="text" class="form-control" placeholder="Mes">
+        </div>
+        <div class="col-md-3">
+            <button class="btn btn-success" type="button" data-bs-toggle="modal" data-bs-target="#fileModal">
+                Cargar archivo <i class="bi bi-file-earmark-spreadsheet"></i>
+            </button>
+        </div>
+    </div>
+
+</div>
+
+<div class="row m-lg-2">
+    <!-- Tarjetas de Totales -->
+    <div class="col-md-4">
+        <div class="card text-center" style="border-radius:15px;">
+            <div class="card-body">
+                <h3>@Model.TotalVentas.ToString("C")</h3>
+                <p>Total de Ventas 💰</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row m-lg-2">
+    <div class="col-md-4 mt-3">
+        <div class="card text-center" style="border-radius:15px;">
+            <div class="card-body">
+                <h3>@Model.TotalUnidades</h3>
+                <p>Total de Unidades 📦</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-8">
+        <div class="card" style="padding:15px; margin:15px;">
+            <div id="graficoVentasPorMes"></div>
+        </div>
+    </div>
+
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="fileModal" tabindex="-1" aria-labelledby="fileModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="fileModalLabel">Carga de Archivo Masiva</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form method="post" asp-action="CargarArchivo" enctype="multipart/form-data">
+                    <div class="form-group m-3">
+                        <label for="imageFile" class="control-label">Archivo de Excel que desee cargar</label>
+                        <input type="file" name="file" class="form-control mt-2" accept=".xlsx" />
+                    </div>
+                    <button type="submit" class="btn btn-success m-3">Cargar</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        // Convertimos los datos de ventas a un formato que ApexCharts pueda usar
+        const ventasPorMes = @Html.Raw(Json.Serialize(Model.VentasPorMes));
+
+        // Extraer los meses y totales para usarlos en el gráfico
+        const categories = ventasPorMes.map(v => `${v.year}-${v.month.toString().padStart(2, '0')}`);
+        const seriesData = ventasPorMes.map(v => v.totalVentasMes);
+
+        // Configuración del gráfico
+        const options = {
+            chart: {
+                type: 'line',
+                height: 350
+            },
+            series: [{
+                name: 'Total Ventas',
+                data: seriesData
+            }],
+            xaxis: {
+                categories: categories,
+                title: {
+                    text: 'Mes'
+                }
+            },
+            yaxis: {
+                title: {
+                    text: 'Total de Ventas'
+                }
+            },
+            title: {
+                text: 'Total de Ventas por Mes 📊',
+                align: 'center'
+            }
+        };
+
+        // Renderizar el gráfico en el div con id 'graficoVentasPorMes'
+        const chart = new ApexCharts(document.querySelector("#graficoVentasPorMes"), options);
+        chart.render();
+    })
+
+</script>
+
+<style>
+    .card{
+        background: rgba(255,255,255,.4);
+        backdrop-filter: blur(20px)
+    }
+    .card:hover{
+        background: rgba(255,255,255,.5);
+        backdrop-filter: blur(20px);
+        transition: all .2s;
+        
+    }
+    .form-control{
+        background: rgba(255,255,255,.8);
+        backdrop-filter: blur(20px)
+    }
+    body{
+        background: url(../image/fondoPantalla.jpg) no-repeat;
+        background-size: cover;
+        position: relative;
+    }
+ </style>
