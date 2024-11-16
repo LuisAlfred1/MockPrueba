@@ -23,34 +23,28 @@
 
 </div>
 
+
 <div class="row m-lg-2">
+    <div class="col-8">
+        <div class="card" style="padding:15px; margin:10px;">
+            <div id="graficoVentasPorMes"></div>
+        </div>
+    </div>
     <!-- Tarjetas de Totales -->
-    <div class="col-md-4">
+    <div class="col-md-4 mt-4">
         <div class="card text-center" style="border-radius:15px;">
             <div class="card-body">
                 <h3>@Model.TotalVentas.ToString("C")</h3>
                 <p>Total de Ventas 💰</p>
             </div>
         </div>
-    </div>
-</div>
-
-<div class="row m-lg-2">
-    <div class="col-md-4 mt-3">
-        <div class="card text-center" style="border-radius:15px;">
+        <div class="card text-center mt-2" style="border-radius:15px;">
             <div class="card-body">
                 <h3>@Model.TotalUnidades</h3>
                 <p>Total de Unidades 📦</p>
             </div>
         </div>
     </div>
-
-    <div class="col-8">
-        <div class="card" style="padding:15px; margin:15px;">
-            <div id="graficoVentasPorMes"></div>
-        </div>
-    </div>
-
 </div>
 
 <!-- Modal -->
@@ -120,12 +114,13 @@
 <style>
     .card{
         background: rgba(255,255,255,.4);
-        backdrop-filter: blur(20px)
+        backdrop-filter: blur(20px);
+        right:20px;
     }
     .card:hover{
         background: rgba(255,255,255,.5);
         backdrop-filter: blur(20px);
-        transition: all .2s;
+        transition: ease-in .2s;
         
     }
     .form-control{
